@@ -1,0 +1,413 @@
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.adm-task-container{
+
+    padding:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.adm-task-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#ffffff;
+
+    padding:25px;
+
+    border-radius:16px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.adm-task-header h1{
+
+    margin:0;
+
+    color:#ff7a00;
+
+    font-size:30px;
+
+}
+
+.adm-task-header p{
+
+    margin-top:8px;
+
+    color:#777;
+
+}
+
+.adm-task-header-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#fff4e8;
+
+    color:#ff7a00;
+
+    font-size:32px;
+
+}
+
+
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.adm-task-summary{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+.adm-task-card{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    box-shadow:0 6px 16px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.adm-task-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.adm-task-card svg{
+
+    font-size:34px;
+
+    color:#ff7a00;
+
+}
+
+.adm-task-card h4{
+
+    margin:0;
+
+    color:#777;
+
+    font-weight:500;
+
+}
+
+.adm-task-card h2{
+
+    margin-top:8px;
+
+    color:#222;
+
+}
+
+
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.adm-task-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.adm-task-search{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:#fff;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.adm-task-search input{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    font-size:15px;
+
+}
+
+.adm-task-filter{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:#fff;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.adm-task-filter select{
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    font-size:15px;
+
+}
+
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.adm-task-table{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    box-shadow:0 6px 16px rgba(0,0,0,.08);
+
+    overflow-x:auto;
+
+}
+
+.adm-task-table table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.adm-task-table th{
+
+    background:#ff7a00;
+
+    color:#fff;
+
+    padding:15px;
+
+    text-align:left;
+
+    font-weight:600;
+
+}
+
+.adm-task-table td{
+
+    padding:15px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.adm-task-table tbody tr:hover{
+
+    background:#fff8f1;
+
+}
+
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.task-status{
+
+    padding:7px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    display:inline-block;
+
+}
+
+.task-status.completed{
+
+    background:#d4edda;
+
+    color:#1b7f3b;
+
+}
+
+.task-status.pending{
+
+    background:#fff3cd;
+
+    color:#b8860b;
+
+}
+
+.task-status.in-progress{
+
+    background:#d1ecff;
+
+    color:#0066cc;
+
+}
+
+.task-status.on-hold{
+
+    background:#f8d7da;
+
+    color:#c62828;
+
+}
+
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.adm-task-loading{
+
+    height:70vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:15px;
+
+    color:#ff7a00;
+
+    font-size:18px;
+
+}
+
+.spin{
+
+    animation:spin 1s linear infinite;
+
+    font-size:40px;
+
+}
+
+@keyframes spin{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:768px){
+
+    .adm-task-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .adm-task-toolbar{
+
+        flex-direction:column;
+
+    }
+
+}

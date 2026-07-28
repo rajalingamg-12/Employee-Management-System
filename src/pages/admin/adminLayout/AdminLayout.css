@@ -1,0 +1,115 @@
+/*=========================================
+        ADMIN LAYOUT
+=========================================*/
+
+.adm-layout-container{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:#f6f7fb;
+
+}
+
+/* Right Section */
+
+.adm-layout-main{
+
+    flex:1;
+
+    margin-left:260px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-width:0;
+
+}
+
+/* Content */
+
+.adm-layout-content{
+
+    flex:1;
+
+    padding:25px;
+
+    overflow-x:hidden;
+
+}
+
+/*=========================================
+        Laptop
+=========================================*/
+
+@media (max-width:1200px){
+
+    .adm-layout-main{
+
+        margin-left:220px;
+
+    }
+
+}
+
+/*=========================================
+        Tablet
+=========================================*/
+
+@media (max-width:768px){
+
+    .adm-layout-main{
+
+        margin-left:85px;
+
+    }
+
+    .adm-layout-content{
+
+        padding:18px;
+
+    }
+
+}
+
+/*=========================================
+        Mobile
+=========================================*/
+
+@media (max-width:576px){
+
+    .adm-layout-main{
+
+        margin-left:70px;
+
+    }
+
+    .adm-layout-content{
+
+        padding:15px;
+
+    }
+
+}
+
+/*=========================================
+        Small Mobile
+=========================================*/
+
+@media (max-width:400px){
+
+    .adm-layout-main{
+
+        margin-left:65px;
+
+    }
+
+    .adm-layout-content{
+
+        padding:12px;
+
+    }
+
+}

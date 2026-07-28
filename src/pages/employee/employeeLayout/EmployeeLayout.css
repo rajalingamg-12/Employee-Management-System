@@ -1,0 +1,83 @@
+/* ==========================================
+   LAYOUT
+========================================== */
+
+.employee-layout{
+    min-height:100vh;
+    background:#f5f7fb;
+}
+
+.employee-body{
+    display:flex;
+    margin-top:80px;
+}
+
+.employee-content{
+    flex:1;
+    margin-left:250px;
+    padding:25px;
+    min-height:calc(100vh - 80px);
+    overflow-y:auto;
+    transition:all .3s ease;
+}
+
+.page-container{
+    width:100%;
+    max-width:100%;
+}
+
+/* ==========================================
+   LARGE LAPTOP (≤1200px)
+========================================== */
+
+@media (max-width:1200px){
+
+    .employee-content{
+        padding:22px;
+    }
+
+}
+
+/* ==========================================
+   TABLET (≤992px)
+========================================== */
+
+@media (max-width:992px){
+
+    .employee-content{
+        margin-left:220px;
+        padding:20px;
+    }
+
+}
+
+/* ==========================================
+   MOBILE (≤768px)
+========================================== */
+
+@media (max-width:768px){
+
+    .employee-body{
+        margin-top:70px;
+    }
+
+    .employee-content{
+        margin-left:70px;
+        padding:16px;
+        min-height:calc(100vh - 70px);
+    }
+
+}
+
+/* ==========================================
+   SMALL MOBILE (≤480px)
+========================================== */
+
+@media (max-width:480px){
+
+    .employee-content{
+        margin-left:70px;
+        padding:12px;
+    }
+
+}

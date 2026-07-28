@@ -1,0 +1,521 @@
+/*=====================================================
+                ADMIN SIDEBAR
+======================================================*/
+
+.adm-sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:260px;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    padding:20px;
+
+    background:linear-gradient(
+        180deg,
+        #ff7b00 0%,
+        #ff9800 55%,
+        #ffb347 100%
+    );
+
+    color:#fff;
+
+    box-shadow:8px 0 25px rgba(0,0,0,.15);
+
+    overflow-y:auto;
+
+    z-index:1000;
+
+}
+
+/*=====================================================
+                SCROLLBAR
+======================================================*/
+
+.adm-sidebar::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.adm-sidebar::-webkit-scrollbar-thumb{
+
+    background:rgba(255,255,255,.35);
+
+    border-radius:20px;
+
+}
+
+/*=====================================================
+                LOGO
+======================================================*/
+
+.adm-sidebar-logo{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    padding-bottom:20px;
+
+    border-bottom:1px solid rgba(255,255,255,.25);
+
+}
+
+.adm-sidebar-logo svg{
+
+    font-size:34px;
+
+    color:#fff;
+
+}
+
+.adm-sidebar-logo h2{
+
+    margin:0;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    letter-spacing:1px;
+
+}
+
+/*=====================================================
+                PROFILE
+======================================================*/
+
+.adm-sidebar-profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin:25px 0;
+
+    padding:15px;
+
+    background:rgba(255,255,255,.18);
+
+    border-radius:15px;
+
+    backdrop-filter:blur(10px);
+
+}
+
+.adm-sidebar-avatar{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:#ff7b00;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.adm-sidebar-profile h4{
+
+    margin:0;
+
+    color:#fff;
+
+    font-size:16px;
+
+}
+
+.adm-sidebar-profile p{
+
+    margin:4px 0 0;
+
+    color:rgba(255,255,255,.9);
+
+    font-size:13px;
+
+}
+
+/*=====================================================
+                MENU
+======================================================*/
+
+.adm-sidebar-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+/*=====================================================
+                MENU LINK
+======================================================*/
+
+.adm-sidebar-link{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px;
+
+    text-decoration:none;
+
+    color:#fff;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.adm-sidebar-link svg{
+
+    font-size:20px;
+
+    min-width:22px;
+
+}
+
+.adm-sidebar-link:hover{
+
+    background:rgba(255,255,255,.20);
+
+    transform:translateX(6px);
+
+}
+
+.adm-sidebar-link.active{
+
+    background:#fff;
+
+    color:#ff7b00;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+}
+
+.adm-sidebar-link.active svg{
+
+    color:#ff7b00;
+
+}
+
+/*=====================================================
+                LOGOUT
+======================================================*/
+
+.adm-sidebar-logout{
+
+    margin-top:auto;
+
+    width:100%;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    color:#ff7b00;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+}
+
+.adm-sidebar-logout:hover{
+
+    transform:translateY(-3px);
+
+    background:#fff5eb;
+
+}
+
+.adm-sidebar-logout svg{
+
+    font-size:18px;
+
+}
+
+/*=====================================================
+            LARGE TABLET
+======================================================*/
+
+@media (max-width:1024px){
+
+    .adm-sidebar{
+
+        width:220px;
+
+        padding:18px;
+
+    }
+
+    .adm-sidebar-logo h2{
+
+        font-size:20px;
+
+    }
+
+    .adm-sidebar-profile{
+
+        padding:12px;
+
+    }
+
+    .adm-sidebar-avatar{
+
+        width:48px;
+
+        height:48px;
+
+        font-size:20px;
+
+    }
+
+}
+
+/*=====================================================
+                TABLET
+======================================================*/
+
+@media (max-width:768px){
+
+    .adm-sidebar{
+
+        width:85px;
+
+        padding:15px 10px;
+
+    }
+
+    .adm-sidebar-logo{
+
+        justify-content:center;
+
+    }
+
+    .adm-sidebar-logo h2{
+
+        display:none;
+
+    }
+
+    .adm-sidebar-logo svg{
+
+        font-size:30px;
+
+    }
+
+    .adm-sidebar-profile{
+
+        justify-content:center;
+
+        padding:10px;
+
+    }
+
+    .adm-sidebar-profile h4,
+
+    .adm-sidebar-profile p{
+
+        display:none;
+
+    }
+
+    .adm-sidebar-avatar{
+
+        width:45px;
+
+        height:45px;
+
+        font-size:18px;
+
+    }
+
+    .adm-sidebar-link{
+
+        justify-content:center;
+
+        padding:15px 0;
+
+    }
+
+    .adm-sidebar-link span{
+
+        display:none;
+
+    }
+
+    .adm-sidebar-link svg{
+
+        margin:0;
+
+        font-size:22px;
+
+    }
+
+    .adm-sidebar-logout{
+
+        width:55px;
+
+        height:50px;
+
+        align-self:center;
+
+        font-size:0;
+
+    }
+
+    .adm-sidebar-logout svg{
+
+        margin:0;
+
+        font-size:20px;
+
+    }
+
+}
+
+/*=====================================================
+                MOBILE
+======================================================*/
+
+@media (max-width:576px){
+
+    .adm-sidebar{
+
+        width:70px;
+
+        padding:12px 8px;
+
+    }
+
+    .adm-sidebar-logo svg{
+
+        font-size:26px;
+
+    }
+
+    .adm-sidebar-profile{
+
+        display:none;
+
+    }
+
+    .adm-sidebar-link{
+
+        padding:14px 0;
+
+    }
+
+    .adm-sidebar-link svg{
+
+        font-size:20px;
+
+    }
+
+    .adm-sidebar-logout{
+
+        width:48px;
+
+        height:48px;
+
+    }
+
+}
+
+/*=====================================================
+            EXTRA SMALL DEVICES
+======================================================*/
+
+@media (max-width:400px){
+
+    .adm-sidebar{
+
+        width:65px;
+
+        padding:10px 6px;
+
+    }
+
+    .adm-sidebar-logo{
+
+        padding-bottom:15px;
+
+    }
+
+    .adm-sidebar-logo svg{
+
+        font-size:24px;
+
+    }
+
+    .adm-sidebar-link svg{
+
+        font-size:18px;
+
+    }
+
+    .adm-sidebar-logout{
+
+        width:44px;
+
+        height:44px;
+
+    }
+
+}
