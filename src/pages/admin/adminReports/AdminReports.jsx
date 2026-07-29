@@ -42,65 +42,65 @@ import * as XLSX from "xlsx";
 
 
 
-function AdminReports(){
+function AdminReports() {
 
 
 
-// =====================================
-// STATES
-// =====================================
+    // =====================================
+    // STATES
+    // =====================================
 
 
-const [loading,setLoading] =
-useState(true);
+    const [loading, setLoading] =
+        useState(true);
 
 
 
-const [employeeReport,setEmployeeReport] =
-useState([]);
+    const [employeeReport, setEmployeeReport] =
+        useState([]);
 
 
 
-const [attendanceReport,setAttendanceReport] =
-useState({
+    const [attendanceReport, setAttendanceReport] =
+        useState({
 
-    summary:{},
+            summary: {},
 
-    attendance:[]
+            attendance: []
 
-});
+        });
 
 
 
-const [taskReport,setTaskReport] =
-useState({
+    const [taskReport, setTaskReport] =
+        useState({
 
-    summary:{},
+            summary: {},
 
-    tasks:[]
+            tasks: []
 
-});
+        });
 
 
 
-const [leaveReport,setLeaveReport] =
-useState({
+    const [leaveReport, setLeaveReport] =
+        useState({
 
-    summary:{},
+            summary: {},
 
-    leaves:[]
+            leaves: []
 
-});
+        });
 
 
 
-const [performanceReport,setPerformanceReport] =
-useState([]);
+    const [performanceReport, setPerformanceReport] =
+        useState([]);
 
 
 
-const [search,setSearch] =
-useState("");
+    const [search, setSearch] =
+        useState("");
 
 
 
@@ -108,906 +108,864 @@ useState("");
 
 
 
-// =====================================
-// LOAD REPORTS
-// =====================================
+    // =====================================
+    // LOAD REPORTS
+    // =====================================
 
 
-useEffect(()=>{
+    useEffect(() => {
 
-    loadReports();
+        loadReports();
 
-},[]);
+    }, []);
 
 
 
 
 
 
-const loadReports = async()=>{
+    const loadReports = async () => {
 
 
-try{
+        try {
 
 
-setLoading(true);
+            setLoading(true);
 
 
 
-const [
+            const [
 
-employees,
+                employees,
 
-attendance,
+                attendance,
 
-tasks,
+                tasks,
 
-leaves,
+                leaves,
 
-performance
+                performance
 
 
-] = await Promise.all([
+            ] = await Promise.all([
 
 
-getEmployeeReport(),
+                getEmployeeReport(),
 
-getAttendanceReport(),
+                getAttendanceReport(),
 
-getTaskReport(),
+                getTaskReport(),
 
-getLeaveReport(),
+                getLeaveReport(),
 
-getPerformanceReport()
+                getPerformanceReport()
 
 
-]);
+            ]);
 
 
 
 
 
-// ==========================
-// EMPLOYEE REPORT
-// ==========================
+            // ==========================
+            // EMPLOYEE REPORT
+            // ==========================
 
 
-if(employees.success){
+            if (employees.success) {
 
 
-setEmployeeReport(
+                setEmployeeReport(
 
-employees.data?.employees || []
+                    employees.data?.employees || []
 
-);
+                );
 
 
-}
+            }
 
 
 
 
 
 
-// ==========================
-// ATTENDANCE REPORT
-// ==========================
+            // ==========================
+            // ATTENDANCE REPORT
+            // ==========================
 
 
-if(attendance.success){
+            if (attendance.success) {
 
 
-setAttendanceReport({
+                setAttendanceReport({
 
-summary:
+                    summary:
 
-attendance.data?.summary || {},
+                        attendance.data?.summary || {},
 
 
-attendance:
+                    attendance:
 
-attendance.data?.attendance || []
+                        attendance.data?.attendance || []
 
 
-});
+                });
 
 
-}
+            }
 
 
+            // ==========================
+            // TASK REPORT
+            // ==========================
 
 
+            if (tasks.success) {
 
 
+                setTaskReport({
 
-// ==========================
-// TASK REPORT
-// ==========================
+                    summary:
 
+                        tasks.data?.summary || {},
 
-if(tasks.success){
 
+                    tasks:
 
-setTaskReport({
+                        tasks.data?.tasks || []
 
-summary:
 
-tasks.data?.summary || {},
+                });
 
 
-tasks:
+            }
 
-tasks.data?.tasks || []
+            // ==========================
+            // LEAVE REPORT
+            // ==========================
 
 
-});
+            if (leaves.success) {
 
 
-}
+                setLeaveReport({
 
+                    summary:
 
+                        leaves.data?.summary || {},
 
 
+                    leaves:
 
+                        leaves.data?.leaves || []
 
 
+                });
 
-// ==========================
-// LEAVE REPORT
-// ==========================
 
+            }
 
-if(leaves.success){
 
 
-setLeaveReport({
 
-summary:
 
-leaves.data?.summary || {},
 
 
-leaves:
+            // ==========================
+            // PERFORMANCE REPORT
+            // ==========================
 
-leaves.data?.leaves || []
 
+            if (performance.success) {
 
-});
 
+                setPerformanceReport(
 
-}
+                    performance.data?.performance ||
+                    performance.data?.performanceReport ||
+                    performance.data?.employees ||
+                    performance.data ||
+                    []
 
+                );
 
 
+            }
 
 
 
+        }
 
-// ==========================
-// PERFORMANCE REPORT
-// ==========================
+        catch (error) {
 
 
-if(performance.success){
+            console.error(error);
 
 
-setPerformanceReport(
+            toast.error(
+                "Failed to load reports"
+            );
 
-performance.data?.performance ||
-performance.data?.performanceReport ||
-performance.data?.employees ||
-performance.data ||
-[]
 
-);
+        }
 
 
-}
+        finally {
 
 
+            setLoading(false);
 
-}
 
-catch(error){
+        }
 
 
-console.error(error);
 
+    };
 
-toast.error(
-"Failed to load reports"
-);
 
 
-}
 
 
-finally{
 
 
-setLoading(false);
 
+    // =====================================
+    // EXPORT ALL REPORTS PDF
+    // =====================================
 
-}
 
+    const exportAllPDF = () => {
 
 
-};
+        const doc =
+            new jsPDF();
 
 
 
 
+        doc.setFontSize(18);
 
 
+        doc.text(
 
+            "Employee Management System",
 
-// =====================================
-// EXPORT ALL REPORTS PDF
-// =====================================
+            14,
 
+            15
 
-const exportAllPDF =()=>{
+        );
 
 
-const doc =
-new jsPDF();
 
 
+        doc.setFontSize(12);
 
 
-doc.setFontSize(18);
+        doc.text(
 
+            "Complete Reports",
 
-doc.text(
+            14,
 
-"Employee Management System",
+            25
 
-14,
+        );
 
-15
 
-);
 
 
+        let y = 35;
 
 
-doc.setFontSize(12);
 
 
-doc.text(
 
-"Complete Reports",
 
-14,
+        // ==========================
+        // EMPLOYEE REPORT
+        // ==========================
 
-25
 
-);
+        doc.text(
 
+            "Employee Report",
 
+            14,
 
+            y
 
-let y = 35;
+        );
 
 
 
+        autoTable(doc, {
 
 
+            startY: y + 5,
 
-// ==========================
-// EMPLOYEE REPORT
-// ==========================
 
+            head: [
 
-doc.text(
+                [
 
-"Employee Report",
+                    "Employee ID",
 
-14,
+                    "Name",
 
-y
+                    "Department",
 
-);
+                    "Designation",
 
+                    "Status"
 
+                ]
 
-autoTable(doc,{
+            ],
 
 
-startY:y+5,
 
+            body:
 
-head:[
+                employeeReport.map(emp => [
 
-[
+                    emp.employeeId,
 
-"Employee ID",
+                    emp.name,
 
-"Name",
+                    emp.department,
 
-"Department",
+                    emp.designation,
 
-"Designation",
+                    emp.status
 
-"Status"
+                ])
 
-]
 
-],
+        });
 
 
 
-body:
 
-employeeReport.map(emp=>[
+        y = doc.lastAutoTable.finalY + 15;
 
-emp.employeeId,
 
-emp.name,
 
-emp.department,
 
-emp.designation,
 
-emp.status
 
-])
 
 
-});
+        doc.text(
+            "Task Report",
+            14,
+            y
+        );
 
+        autoTable(doc, {
 
+            startY: y + 5,
 
+            head: [[
+                "Task ID",
+                "Employee",
+                "Task",
+                "Status",
+                "Priority"
+            ]],
 
-y = doc.lastAutoTable.finalY + 15;
+            body:
 
+                taskReport.tasks.map(task => [
 
+                    task.taskId,
 
+                    task.employeeName || task.name,
 
+                    task.task ||
 
+                    task.title || task.taskName,
 
+                    task.status,
 
+                    task.priority
 
-doc.text(
-"Task Report",
-14,
-y
-);
+                ])
 
-autoTable(doc,{
+        });
 
-startY:y+5,
+        y = doc.lastAutoTable.finalY + 15;
 
-head:[[
-"Task ID",
-"Employee",
-"Task",
-"Status",
-"Priority"
-]],
 
-body:
+        // ==========================
+        // ATTENDANCE REPORT
+        // ==========================
 
-taskReport.tasks.map(task=>[
 
-task.taskId,
+        doc.text(
 
-task.employeeName || task.name,
+            "Attendance Report",
 
-task.title || task.taskName,
+            14,
 
-task.status,
+            y
 
-task.priority
+        );
 
-])
 
-});
 
-y = doc.lastAutoTable.finalY + 15;
+        autoTable(doc, {
 
 
-// ==========================
-// ATTENDANCE REPORT
-// ==========================
+            startY: y + 5,
 
 
-doc.text(
+            head: [
 
-"Attendance Report",
+                [
 
-14,
+                    "Employee",
 
-y
+                    "Date",
 
-);
+                    "Check In",
 
+                    "Check Out",
 
+                    "Hours",
 
-autoTable(doc,{
+                    "Status"
 
+                ]
 
-startY:y+5,
+            ],
 
 
-head:[
 
-[
+            body:
 
-"Employee",
+                attendanceReport.attendance.map(att => [
 
-"Date",
 
-"Check In",
+                    att.name,
 
-"Check Out",
 
-"Hours",
+                    att.date,
 
-"Status"
 
-]
+                    att.checkIn,
 
-],
 
+                    att.checkOut,
 
 
-body:
+                    att.totalHours,
 
-attendanceReport.attendance.map(att=>[
 
+                    att.status
 
-att.name,
 
+                ])
 
-att.date,
 
+        });
 
-att.checkIn,
 
 
-att.checkOut,
 
+        y = doc.lastAutoTable.finalY + 15;
 
-att.totalHours,
 
 
-att.status
 
 
-])
 
 
-});
 
+        // ==========================
+        // LEAVE REPORT
+        // ==========================
 
 
+        doc.text(
 
-y = doc.lastAutoTable.finalY + 15;
+            "Leave Report",
 
+            14,
 
+            y
 
+        );
 
 
 
+        autoTable(doc, {
 
 
-// ==========================
-// LEAVE REPORT
-// ==========================
+            startY: y + 5,
 
 
-doc.text(
+            head: [
 
-"Leave Report",
+                [
 
-14,
+                    "Employee",
 
-y
+                    "Type",
 
-);
+                    "From",
 
+                    "To",
 
+                    "Status"
 
-autoTable(doc,{
+                ]
 
+            ],
 
-startY:y+5,
 
 
-head:[
+            body:
 
-[
+                leaveReport.leaves.map(leave => [
 
-"Employee",
 
-"Type",
+                    leave.name,
 
-"From",
 
-"To",
+                    leave.leaveType,
 
-"Status"
 
-]
+                    leave.fromDate,
 
-],
 
+                    leave.toDate,
 
 
-body:
+                    leave.status
 
-leaveReport.leaves.map(leave=>[
 
+                ])
 
-leave.name,
 
+        });
 
-leave.leaveType,
 
 
-leave.fromDate,
 
 
-leave.toDate,
 
+        doc.save(
 
-leave.status
+            "Complete_Report.pdf"
 
+        );
 
-])
 
 
-});
+    };
 
 
 
 
 
 
-doc.save(
 
-"Complete_Report.pdf"
 
-);
+    // =====================================
+    // EXPORT ALL REPORTS EXCEL
+    // =====================================
 
 
+    const exportAllExcel = () => {
 
-};
 
 
+        const workbook =
 
+            XLSX.utils.book_new();
 
 
 
 
 
-// =====================================
-// EXPORT ALL REPORTS EXCEL
-// =====================================
 
+        // EMPLOYEE SHEET
 
-const exportAllExcel =()=>{
 
+        XLSX.utils.book_append_sheet(
 
+            workbook,
 
-const workbook =
+            XLSX.utils.json_to_sheet(
 
-XLSX.utils.book_new();
+                employeeReport
 
+            ),
 
+            "Employees"
 
+        );
 
 
 
-// EMPLOYEE SHEET
 
 
-XLSX.utils.book_append_sheet(
 
-workbook,
 
-XLSX.utils.json_to_sheet(
+        // TASK SHEET
 
-employeeReport
 
-),
+        XLSX.utils.book_append_sheet(
 
-"Employees"
+            workbook,
 
-);
+            XLSX.utils.json_to_sheet(
 
+                taskReport.tasks
 
+            ),
 
+            "Tasks"
 
+        );
 
 
 
-// TASK SHEET
 
 
-XLSX.utils.book_append_sheet(
 
-workbook,
 
-XLSX.utils.json_to_sheet(
+        // ATTENDANCE SHEET
 
-taskReport.tasks
 
-),
+        XLSX.utils.book_append_sheet(
 
-"Tasks"
+            workbook,
 
-);
+            XLSX.utils.json_to_sheet(
 
+                attendanceReport.attendance
 
+            ),
 
+            "Attendance"
 
+        );
 
 
 
-// ATTENDANCE SHEET
 
 
-XLSX.utils.book_append_sheet(
 
-workbook,
 
-XLSX.utils.json_to_sheet(
 
-attendanceReport.attendance
+        // LEAVE SHEET
 
-),
 
-"Attendance"
+        XLSX.utils.book_append_sheet(
 
-);
+            workbook,
 
+            XLSX.utils.json_to_sheet(
 
+                leaveReport.leaves
 
+            ),
 
+            "Leaves"
 
+        );
 
 
 
-// LEAVE SHEET
 
 
-XLSX.utils.book_append_sheet(
 
-workbook,
 
-XLSX.utils.json_to_sheet(
+        // PERFORMANCE SHEET
 
-leaveReport.leaves
 
-),
+        XLSX.utils.book_append_sheet(
 
-"Leaves"
+            workbook,
 
-);
+            XLSX.utils.json_to_sheet(
 
+                performanceReport
 
+            ),
 
+            "Performance"
 
+        );
 
 
 
-// PERFORMANCE SHEET
 
 
-XLSX.utils.book_append_sheet(
 
-workbook,
 
-XLSX.utils.json_to_sheet(
+        XLSX.writeFile(
 
-performanceReport
+            workbook,
 
-),
+            "Complete_Report.xlsx"
 
-"Performance"
+        );
 
-);
 
 
+    };
+    // =====================================
+    // SEARCH FILTER
+    // =====================================
 
 
+    const filteredEmployees = employeeReport.filter((emp) => {
 
 
+        const value =
+            search.toLowerCase();
 
-XLSX.writeFile(
 
-workbook,
 
-"Complete_Report.xlsx"
+        return (
 
-);
 
+            emp.employeeId
+                ?.toLowerCase()
+                .includes(value)
 
 
-};
-// =====================================
-// SEARCH FILTER
-// =====================================
 
+            ||
 
-const filteredEmployees = employeeReport.filter((emp)=>{
+            emp.name
+                ?.toLowerCase()
+                .includes(value)
 
 
-const value =
-search.toLowerCase();
 
+            ||
 
+            emp.department
+                ?.toLowerCase()
+                .includes(value)
 
-return(
 
 
-emp.employeeId
-?.toLowerCase()
-.includes(value)
+            ||
 
+            emp.designation
+                ?.toLowerCase()
+                .includes(value)
 
 
-||
 
-emp.name
-?.toLowerCase()
-.includes(value)
+        );
 
 
+    });
 
-||
 
-emp.department
-?.toLowerCase()
-.includes(value)
 
 
 
-||
 
-emp.designation
-?.toLowerCase()
-.includes(value)
 
+    // =====================================
+    // LOADING
+    // =====================================
 
 
-);
+    if (loading) {
 
 
-});
+        return (
 
+            <div className="adm-report-loading">
 
+                Loading Reports...
 
+            </div>
 
+        );
 
 
+    }
 
-// =====================================
-// LOADING
-// =====================================
 
 
-if(loading){
 
 
-return(
 
-<div className="adm-report-loading">
 
-    Loading Reports...
+    // =====================================
+    // JSX START
+    // =====================================
 
-</div>
 
-);
+    return (
 
 
-}
+        <div className="adm-report-container">
 
 
 
 
 
-
-
-// =====================================
-// JSX START
-// =====================================
-
-
-return(
-
-
-<div className="adm-report-container">
-
-
-
-
-
-{/* ==========================
+            {/* ==========================
 HEADER
 ========================== */}
 
 
-<div className="adm-report-header">
+            <div className="adm-report-header">
 
 
 
-<div>
+                <div>
 
 
-<h1>
+                    <h1>
 
-Reports
+                        Reports
 
-</h1>
-
-
-<p>
-
-Employee Management Reports
-
-</p>
+                    </h1>
 
 
-</div>
+                    <p>
+
+                        Employee Management Reports
+
+                    </p>
 
 
-
-
-
-
-<div className="adm-report-buttons">
-
-
-
-<button
-
-onClick={exportAllPDF}
-
->
-
-
-<FaFilePdf/>
-
-
-Export All PDF
-
-
-</button>
+                </div>
 
 
 
 
 
 
-
-<button
-
-onClick={exportAllExcel}
-
->
-
-
-<FaFileExcel/>
-
-
-Export Google Excel
-
-
-</button>
+                <div className="adm-report-buttons">
 
 
 
+                    <button
+
+                        onClick={exportAllPDF}
+
+                    >
 
 
-</div>
+                        <FaFilePdf />
 
 
+                        Export All PDF
 
 
-</div>
+                    </button>
 
 
 
@@ -1015,36 +973,68 @@ Export Google Excel
 
 
 
+                    <button
 
-{/* ==========================
+                        onClick={exportAllExcel}
+
+                    >
+
+
+                        <FaFileExcel />
+
+
+                        Export Google Excel
+
+
+                    </button>
+
+
+
+
+
+                </div>
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+            {/* ==========================
 SUMMARY CARDS
 ========================== */}
 
 
 
-<div className="adm-report-summary">
+            <div className="adm-report-summary">
 
 
 
 
 
-<SummaryCard
+                <SummaryCard
 
 
-icon={<FaUsers/>}
+                    icon={<FaUsers />}
 
 
-title="Total Employees"
+                    title="Total Employees"
 
 
-value={
+                    value={
 
-employeeReport.length
+                        employeeReport.length
 
-}
+                    }
 
 
-/>
+                />
 
 
 
@@ -1052,31 +1042,31 @@ employeeReport.length
 
 
 
-<SummaryCard
+                <SummaryCard
 
 
-icon={<FaCalendarCheck/>}
+                    icon={<FaCalendarCheck />}
 
 
-title="Total Attendances"
+                    title="Total Attendances"
 
 
-value={
+                    value={
 
 
-attendanceReport.summary?.present ||
+                        attendanceReport.summary?.present ||
 
 
-attendanceReport.summary?.presentToday ||
+                        attendanceReport.summary?.presentToday ||
 
 
-0
+                        0
 
 
-}
+                    }
 
 
-/>
+                />
 
 
 
@@ -1084,25 +1074,25 @@ attendanceReport.summary?.presentToday ||
 
 
 
-<SummaryCard
+                <SummaryCard
 
 
-icon={<FaTasks/>}
+                    icon={<FaTasks />}
 
 
-title="Total Tasks"
+                    title="Total Tasks"
 
 
-value={
+                    value={
 
 
-taskReport.tasks.length
+                        taskReport.tasks.length
 
 
-}
+                    }
 
 
-/>
+                />
 
 
 
@@ -1110,31 +1100,31 @@ taskReport.tasks.length
 
 
 
-<SummaryCard
+                <SummaryCard
 
 
-icon={<FaUserClock/>}
+                    icon={<FaUserClock />}
 
 
-title="Pending Leaves"
+                    title="Pending Leaves"
 
 
-value={
+                    value={
 
 
-leaveReport.summary?.pending ||
+                        leaveReport.summary?.pending ||
 
 
-leaveReport.summary?.pendingLeaves ||
+                        leaveReport.summary?.pendingLeaves ||
 
 
-0
+                        0
 
 
-}
+                    }
 
 
-/>
+                />
 
 
 
@@ -1143,30 +1133,30 @@ leaveReport.summary?.pendingLeaves ||
 
 
 
-<SummaryCard
+                <SummaryCard
 
 
-icon={<FaChartLine/>}
+                    icon={<FaChartLine />}
 
 
-title="Performance"
+                    title="Performance"
 
 
-value={
+                    value={
 
-performanceReport.length
+                        performanceReport.length
 
-}
+                    }
 
 
-/>
+                />
 
 
 
 
 
 
-</div>
+            </div>
 
 
 
@@ -1176,191 +1166,191 @@ performanceReport.length
 
 
 
-{/* ==========================
+            {/* ==========================
 SEARCH
 ========================== */}
 
 
 
-<div className="adm-report-search">
+            <div className="adm-report-search">
 
 
 
-<FaSearch/>
+                <FaSearch />
 
-<input
-
-
-type="text"
+                <input
 
 
-placeholder="Search employee..."
+                    type="text"
 
 
-value={search}
+                    placeholder="Search employee..."
+
+
+                    value={search}
 
 
 
-onChange={(e)=>
+                    onChange={(e) =>
 
 
-setSearch(e.target.value)
+                        setSearch(e.target.value)
 
-}/>
-</div>
+                    } />
+            </div>
 
-{/* ==========================
+            {/* ==========================
 EMPLOYEE REPORT TABLE
 ========================== */}
 
 
-<div className="adm-report-section">
+            <div className="adm-report-section">
 
 
-<h2>
+                <h2>
 
-Employee Report
+                    Employee Report
 
-</h2>
+                </h2>
 
 
 
-<div className="adm-report-table">
+                <div className="adm-report-table">
 
 
-<table>
+                    <table>
 
 
-<thead>
+                        <thead>
 
 
-<tr>
+                            <tr>
 
-<th>Employee ID</th>
+                                <th>Employee ID</th>
 
-<th>Name</th>
+                                <th>Name</th>
 
-<th>Department</th>
+                                <th>Department</th>
 
-<th>Designation</th>
+                                <th>Designation</th>
 
-<th>Status</th>
+                                <th>Status</th>
 
 
-</tr>
+                            </tr>
 
 
-</thead>
+                        </thead>
 
 
 
-<tbody>
+                        <tbody>
 
 
-{
+                            {
 
 
-filteredEmployees.length > 0 ?
+                                filteredEmployees.length > 0 ?
 
 
-filteredEmployees.map((emp,index)=>(
+                                    filteredEmployees.map((emp, index) => (
 
 
-<tr key={index}>
+                                        <tr key={index}>
 
 
-<td>
+                                            <td>
 
-{emp.employeeId}
+                                                {emp.employeeId}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{emp.name}
+                                                {emp.name}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{emp.department}
+                                                {emp.department}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{emp.designation}
+                                                {emp.designation}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
 
-<span
+                                                <span
 
-className={
+                                                    className={
 
-emp.status==="Active"
+                                                        emp.status === "Active"
 
-?
+                                                            ?
 
-"adm-status-active"
+                                                            "adm-status-active"
 
-:
+                                                            :
 
-"adm-status-inactive"
+                                                            "adm-status-inactive"
 
-}
+                                                    }
 
 
->
+                                                >
 
-{emp.status}
+                                                    {emp.status}
 
-</span>
+                                                </span>
 
 
-</td>
+                                            </td>
 
 
-</tr>
+                                        </tr>
 
 
-))
+                                    ))
 
 
-:
+                                    :
 
 
-<tr>
+                                    <tr>
 
-<td colSpan="5">
+                                        <td colSpan="5">
 
-No Employee Records
+                                            No Employee Records
 
-</td>
+                                        </td>
 
-</tr>
+                                    </tr>
 
 
-}
+                            }
 
 
 
-</tbody>
+                        </tbody>
 
 
-</table>
+                    </table>
 
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
 
 
@@ -1368,146 +1358,146 @@ No Employee Records
 
 
 
-{/* ==========================
+            {/* ==========================
 ATTENDANCE REPORT TABLE
 ========================== */}
 
 
 
-<div className="adm-report-section">
+            <div className="adm-report-section">
 
 
-<h2>
+                <h2>
 
-Attendance Report
+                    Attendance Report
 
-</h2>
+                </h2>
 
 
 
-<div className="adm-report-table">
+                <div className="adm-report-table">
 
 
-<table>
+                    <table>
 
 
-<thead>
+                        <thead>
 
-<tr>
+                            <tr>
 
 
-<th>Employee</th>
+                                <th>Employee</th>
 
-<th>Date</th>
+                                <th>Date</th>
 
-<th>Check In</th>
+                                <th>Check In</th>
 
-<th>Check Out</th>
+                                <th>Check Out</th>
 
-<th>Total Hours</th>
+                                <th>Total Hours</th>
 
-<th>Status</th>
+                                <th>Status</th>
 
 
-</tr>
+                            </tr>
 
 
-</thead>
+                        </thead>
 
 
 
-<tbody>
+                        <tbody>
 
 
 
-{
+                            {
 
 
-attendanceReport.attendance.length > 0 ?
+                                attendanceReport.attendance.length > 0 ?
 
 
-attendanceReport.attendance.map((att,index)=>(
+                                    attendanceReport.attendance.map((att, index) => (
 
 
-<tr key={index}>
+                                        <tr key={index}>
 
 
-<td>
+                                            <td>
 
-{att.name}
+                                                {att.name}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{att.date}
+                                                {att.date}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{att.checkIn}
+                                                {att.checkIn}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{att.checkOut}
+                                                {att.checkOut}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{att.totalHours}
+                                                {att.totalHours}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{att.status}
+                                                {att.status}
 
-</td>
+                                            </td>
 
 
-</tr>
+                                        </tr>
 
 
-))
+                                    ))
 
 
-:
+                                    :
 
 
-<tr>
+                                    <tr>
 
-<td colSpan="6">
+                                        <td colSpan="6">
 
-No Attendance Records
+                                            No Attendance Records
 
-</td>
+                                        </td>
 
-</tr>
+                                    </tr>
 
 
-}
+                            }
 
 
 
-</tbody>
+                        </tbody>
 
 
-</table>
+                    </table>
 
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
 
 
@@ -1516,161 +1506,161 @@ No Attendance Records
 
 
 
-{/* ==========================
+            {/* ==========================
 TASK REPORT TABLE
 ========================== */}
 
 
 
-<div className="adm-report-section">
+            <div className="adm-report-section">
 
 
-<h2>
+                <h2>
 
-Task Report
+                    Task Report
 
-</h2>
+                </h2>
 
 
 
 
-<div className="adm-report-table">
+                <div className="adm-report-table">
 
 
-<table>
+                    <table>
 
 
-<thead>
+                        <thead>
 
 
-<tr>
+                            <tr>
 
 
-<th>Task ID</th>
+                                <th>Task ID</th>
 
-<th>Employee</th>
+                                <th>Employee</th>
 
-<th>Task</th>
+                                <th>Task</th>
 
-<th>Status</th>
+                                <th>Status</th>
 
-<th>Priority</th>
+                                <th>Priority</th>
 
-<th>Date</th>
+                                <th>Date</th>
 
 
-</tr>
+                            </tr>
 
 
-</thead>
+                        </thead>
 
 
 
 
-<tbody>
+                        <tbody>
 
 
-{
+                            {
 
 
-taskReport.tasks.length > 0 ?
+                                taskReport.tasks.length > 0 ?
 
 
-taskReport.tasks.map((task,index)=>(
+                                    taskReport.tasks.map((task, index) => (
 
 
-<tr key={index}>
+                                        <tr key={index}>
 
 
-<td>
+                                            <td>
 
-{task.taskId}
+                                                {task.taskId}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{task.employeeName || task.name}
+                                                {task.employeeName || task.name}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{
-task.task ||
-task.title ||
-task.taskName ||
-task.description ||
-"-"
+                                                {
+                                                    task.task ||
+                                                    task.title ||
+                                                    task.taskName ||
+                                                    task.description ||
+                                                    "-"
 
-}
+                                                }
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{task.status}
+                                                {task.status}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{task.priority}
+                                                {task.priority}
 
-</td>
+                                            </td>
 
-<td>
+                                            <td>
 
-{
-task.date ||
-task.taskDate ||
-task.submittedDate ||
-"-"
+                                                {
+                                                    task.date ||
+                                                    task.taskDate ||
+                                                    task.submittedDate ||
+                                                    "-"
 
-}
+                                                }
 
-</td>
+                                            </td>
 
 
-</tr>
+                                        </tr>
 
 
-))
+                                    ))
 
 
-:
+                                    :
 
 
-<tr>
+                                    <tr>
 
-<td colSpan="6">
+                                        <td colSpan="6">
 
-No Task Records
+                                            No Task Records
 
-</td>
+                                        </td>
 
-</tr>
+                                    </tr>
 
 
-}
+                            }
 
 
-</tbody>
+                        </tbody>
 
 
 
-</table>
+                    </table>
 
 
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
 
 
@@ -1680,306 +1670,306 @@ No Task Records
 
 
 
-{/* ==========================
+            {/* ==========================
 LEAVE REPORT TABLE
 ========================== */}
 
 
 
-<div className="adm-report-section">
+            <div className="adm-report-section">
 
 
-<h2>
+                <h2>
 
-Leave Report
+                    Leave Report
 
-</h2>
+                </h2>
 
 
 
 
-<div className="adm-report-table">
+                <div className="adm-report-table">
 
 
-<table>
+                    <table>
 
 
-<thead>
+                        <thead>
 
 
-<tr>
+                            <tr>
 
 
-<th>Employee</th>
+                                <th>Employee</th>
 
-<th>Leave Type</th>
+                                <th>Leave Type</th>
 
-<th>From</th>
+                                <th>From</th>
 
-<th>To</th>
+                                <th>To</th>
 
-<th>Status</th>
+                                <th>Status</th>
 
 
-</tr>
+                            </tr>
 
 
-</thead>
+                        </thead>
 
 
 
 
-<tbody>
+                        <tbody>
 
 
-{
+                            {
 
 
-leaveReport.leaves.length > 0 ?
+                                leaveReport.leaves.length > 0 ?
 
 
-leaveReport.leaves.map((leave,index)=>(
+                                    leaveReport.leaves.map((leave, index) => (
 
 
-<tr key={index}>
+                                        <tr key={index}>
 
 
-<td>
+                                            <td>
 
-{leave.name}
+                                                {leave.name}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{leave.leaveType}
+                                                {leave.leaveType}
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{
-leave.fromDate ||
-leave.startDate ||
-leave.from ||
-leave.leaveFrom ||
-"-"
+                                                {
+                                                    leave.fromDate ||
+                                                    leave.startDate ||
+                                                    leave.from ||
+                                                    leave.leaveFrom ||
+                                                    "-"
 
-}
+                                                }
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{
-leave.toDate ||
-leave.endDate ||
-leave.to ||
-leave.leaveTo ||
-"-"
+                                                {
+                                                    leave.toDate ||
+                                                    leave.endDate ||
+                                                    leave.to ||
+                                                    leave.leaveTo ||
+                                                    "-"
 
-}
+                                                }
 
-</td>
+                                            </td>
 
 
-<td>
+                                            <td>
 
-{leave.status}
+                                                {leave.status}
 
-</td>
+                                            </td>
 
 
-</tr>
+                                        </tr>
 
 
-))
+                                    ))
 
 
-:
+                                    :
 
 
-<tr>
+                                    <tr>
 
-<td colSpan="5">
+                                        <td colSpan="5">
 
-No Leave Records
+                                            No Leave Records
 
-</td>
+                                        </td>
 
-</tr>
+                                    </tr>
 
 
-}
+                            }
 
 
 
-</tbody>
+                        </tbody>
 
 
-</table>
+                    </table>
 
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
-{/* ==========================
+            {/* ==========================
 PERFORMANCE REPORT TABLE
 ========================== */}
 
 
 
-<div className="adm-report-section">
+            <div className="adm-report-section">
 
-<h2>
+                <h2>
 
-Performance Report
+                    Performance Report
 
-</h2>
+                </h2>
 
 
 
 
-<div className="adm-report-table">
+                <div className="adm-report-table">
 
 
-<table>
+                    <table>
 
 
-<thead>
+                        <thead>
 
 
-<tr>
+                            <tr>
 
 
-<th>Employee</th>
+                                <th>Employee</th>
 
-<th>Total Tasks</th>
+                                <th>Total Tasks</th>
 
-<th>Completed</th>
+                                <th>Completed</th>
 
-<th>Pending</th>
+                                <th>Pending</th>
 
-<th>Score</th>
+                                <th>Score</th>
 
 
-</tr>
+                            </tr>
 
 
-</thead>
+                        </thead>
 
 
 
 
-<tbody>
+                        <tbody>
 
-{
+                            {
 
-performanceReport.length > 0 ?
+                                performanceReport.length > 0 ?
 
 
-performanceReport.map((performance,index)=>(
+                                    performanceReport.map((performance, index) => (
 
 
-<tr key={index}>
+                                        <tr key={index}>
 
 
-<td>
+                                            <td>
 
-{
-performance.name ||
-performance.employeeName ||
-"-"
-}
+                                                {
+                                                    performance.name ||
+                                                    performance.employeeName ||
+                                                    "-"
+                                                }
 
-</td>
+                                            </td>
 
-<td>
-{
-performance.tasks?.total || 0
-}
-</td>
+                                            <td>
+                                                {
+                                                    performance.tasks?.total || 0
+                                                }
+                                            </td>
 
-<td>
-{
-performance.tasks?.completed || 0
-}
-</td>
+                                            <td>
+                                                {
+                                                    performance.tasks?.completed || 0
+                                                }
+                                            </td>
 
-<td>
-{
-performance.tasks?.pending || 0
-}
-</td>
+                                            <td>
+                                                {
+                                                    performance.tasks?.pending || 0
+                                                }
+                                            </td>
 
 
 
-<td>
+                                            <td>
 
-{
+                                                {
 
-performance.score ||
+                                                    performance.score ||
 
-performance.performanceScore ||
+                                                    performance.performanceScore ||
 
-"-"
+                                                    "-"
 
-}
+                                                }
 
-</td>
+                                            </td>
 
 
 
-</tr>
+                                        </tr>
 
 
-))
+                                    ))
 
 
-:
+                                    :
 
-<tr>
+                                    <tr>
 
-<td colSpan="5">
+                                        <td colSpan="5">
 
-No Performance Records
+                                            No Performance Records
 
-</td>
+                                        </td>
 
-</tr>
+                                    </tr>
 
 
-}
+                            }
 
 
 
-</tbody>
+                        </tbody>
 
 
 
-</table>
+                    </table>
 
 
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
 
 
 
 
 
-</div>
+        </div>
 
 
-);
+    );
 
 
 }
@@ -1991,61 +1981,61 @@ No Performance Records
 
 function SummaryCard({
 
-icon,
+    icon,
 
-title,
+    title,
 
-value
-
-
-}){
+    value
 
 
-return(
+}) {
 
 
-<div className="adm-report-card">
+    return (
 
 
-
-<div className="adm-report-icon">
-
-
-{icon}
-
-
-</div>
+        <div className="adm-report-card">
 
 
 
+            <div className="adm-report-icon">
 
 
-<div>
+                {icon}
 
 
-<h3>
-
-{title}
-
-</h3>
-
-
-<h2>
-
-{value}
-
-</h2>
-
-
-</div>
+            </div>
 
 
 
 
-</div>
+
+            <div>
 
 
-);
+                <h3>
+
+                    {title}
+
+                </h3>
+
+
+                <h2>
+
+                    {value}
+
+                </h2>
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+    );
 
 
 
