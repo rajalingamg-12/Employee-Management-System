@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 
 import {
     FaCalendarAlt,
@@ -35,28 +35,26 @@ function AttendanceHistory() {
     // LOAD ATTENDANCE
     // ==========================================
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        loadAttendanceHistory();
+    //     loadAttendanceHistory();
 
-    }, []);
+    // }, []);
 
     // ==========================================
     // API
     // ==========================================
 
-    const loadAttendanceHistory = async () => {
+    const employeeId = user.employeeId;
+
+    const loadAttendanceHistory = useCallback(async () => {
 
         try {
 
             setLoading(true);
-
             const response = await api.post("", {
-
                 action: "attendanceHistory",
-
-                employeeId: user.employeeId
-
+                employeeId: employeeId
             });
 
             if (response.data.success) {
@@ -79,7 +77,12 @@ function AttendanceHistory() {
 
         }
 
-    };
+    }, [employeeId]);
+
+    useEffect(() => {
+        loadAttendanceHistory();
+    }, [loadAttendanceHistory]);
+
 
     // ==========================================
     // FILTER DATA
@@ -136,7 +139,7 @@ function AttendanceHistory() {
         year
 
     ]);
-        // ==========================================
+    // ==========================================
     // SUMMARY
     // ==========================================
 
@@ -243,7 +246,7 @@ function AttendanceHistory() {
 
                         value={searchDate}
 
-                        onChange={(e)=>
+                        onChange={(e) =>
 
                             setSearchDate(e.target.value)
 
@@ -257,7 +260,7 @@ function AttendanceHistory() {
 
                     value={month}
 
-                    onChange={(e)=>
+                    onChange={(e) =>
 
                         setMonth(e.target.value)
 
@@ -275,15 +278,15 @@ function AttendanceHistory() {
 
                         Array.from(
 
-                            { length:12 },
+                            { length: 12 },
 
-                            (_,i)=>(
+                            (_, i) => (
 
                                 <option
 
                                     key={i}
 
-                                    value={String(i+1).padStart(2,"0")}
+                                    value={String(i + 1).padStart(2, "0")}
 
                                 >
 
@@ -301,7 +304,7 @@ function AttendanceHistory() {
 
                                             {
 
-                                                month:"long"
+                                                month: "long"
 
                                             }
 
@@ -323,7 +326,7 @@ function AttendanceHistory() {
 
                     value={year}
 
-                    onChange={(e)=>
+                    onChange={(e) =>
 
                         setYear(e.target.value)
 
@@ -343,11 +346,11 @@ function AttendanceHistory() {
 
                             attendance.map(
 
-                                item=>item.date.split("/")[2]
+                                item => item.date.split("/")[2]
 
                             )
 
-                        )].map(y=>(
+                        )].map(y => (
 
                             <option
 
@@ -368,7 +371,7 @@ function AttendanceHistory() {
                 </select>
 
             </div>
-                        {/* ==========================
+            {/* ==========================
                 TABLE
             ========================== */}
 
@@ -378,115 +381,115 @@ function AttendanceHistory() {
 
                     loading ?
 
-                    <div className="loading">
+                        <div className="loading">
 
-                        Loading attendance records...
+                            Loading attendance records...
 
-                    </div>
+                        </div>
 
-                    :
+                        :
 
-                    filteredAttendance.length === 0 ?
+                        filteredAttendance.length === 0 ?
 
-                    <div className="no-records">
+                            <div className="no-records">
 
-                        No attendance records found.
+                                No attendance records found.
 
-                    </div>
+                            </div>
 
-                    :
+                            :
 
-                    <table className="attendance-table">
+                            <table className="attendance-table">
 
-                        <thead>
+                                <thead>
 
-                            <tr>
+                                    <tr>
 
-                                <th>Date</th>
+                                        <th>Date</th>
 
-                                <th>Check In</th>
+                                        <th>Check In</th>
 
-                                <th>Check Out</th>
+                                        <th>Check Out</th>
 
-                                <th>Hours</th>
+                                        <th>Hours</th>
 
-                                <th>Status</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            {
-
-                                filteredAttendance.map((item,index)=>(
-
-                                    <tr key={index}>
-
-                                        <td>
-
-                                            {item.date}
-
-                                        </td>
-
-                                        <td>
-
-                                            {item.checkIn || "--"}
-
-                                        </td>
-
-                                        <td>
-
-                                            {item.checkOut || "--"}
-
-                                        </td>
-
-                                        <td>
-
-                                            {item.totalHours || "--"}
-
-                                        </td>
-
-                                        <td>
-
-                                            <span
-
-                                                className={
-
-                                                    item.status==="Present"
-
-                                                    ?
-
-                                                    "status present"
-
-                                                    :
-
-                                                    "status absent"
-
-                                                }
-
-                                            >
-
-                                                {
-
-                                                    item.status
-
-                                                }
-
-                                            </span>
-
-                                        </td>
+                                        <th>Status</th>
 
                                     </tr>
 
-                                ))
+                                </thead>
 
-                            }
+                                <tbody>
 
-                        </tbody>
+                                    {
 
-                    </table>
+                                        filteredAttendance.map((item, index) => (
+
+                                            <tr key={index}>
+
+                                                <td>
+
+                                                    {item.date}
+
+                                                </td>
+
+                                                <td>
+
+                                                    {item.checkIn || "--"}
+
+                                                </td>
+
+                                                <td>
+
+                                                    {item.checkOut || "--"}
+
+                                                </td>
+
+                                                <td>
+
+                                                    {item.totalHours || "--"}
+
+                                                </td>
+
+                                                <td>
+
+                                                    <span
+
+                                                        className={
+
+                                                            item.status === "Present"
+
+                                                                ?
+
+                                                                "status present"
+
+                                                                :
+
+                                                                "status absent"
+
+                                                        }
+
+                                                    >
+
+                                                        {
+
+                                                            item.status
+
+                                                        }
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                        ))
+
+                                    }
+
+                                </tbody>
+
+                            </table>
 
                 }
 

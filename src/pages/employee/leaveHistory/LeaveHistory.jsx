@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import {
     FaCalendarCheck,
@@ -22,6 +22,7 @@ function LeaveHistory() {
 
     const user =
         JSON.parse(localStorage.getItem("user")) || {};
+    const employeeId = user.employeeId;
 
 
 
@@ -38,8 +39,41 @@ function LeaveHistory() {
 
 
 
+    const loadLeaves = useCallback(async () => {
 
+        try {
 
+            setLoading(true);
+
+            const response = await getMyLeaves(employeeId);
+
+            if (response.success) {
+
+                setLeaves(response.data || []);
+                setFilteredLeaves(response.data || []);
+
+            } else {
+
+                toast.error(
+                    response.message ||
+                    "Unable to load leave history"
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            toast.error("Failed to fetch leave history");
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    }, [employeeId]);
 
     // ======================================
     // LOAD LEAVES
@@ -47,91 +81,8 @@ function LeaveHistory() {
 
 
     useEffect(() => {
-
-
         loadLeaves();
-
-
-    }, []);
-
-
-
-
-
-
-    const loadLeaves = async () => {
-
-
-        try {
-
-
-            setLoading(true);
-
-
-
-            const response =
-                await getMyLeaves(
-                    user.employeeId
-                );
-
-
-
-            if (response.success) {
-
-
-                setLeaves(
-                    response.data || []
-                );
-
-
-                setFilteredLeaves(
-                    response.data || []
-                );
-
-
-            }
-            else {
-
-
-                toast.error(
-                    response.message ||
-                    "Unable to load leave history"
-                );
-
-
-            }
-
-
-
-        }
-        catch (error) {
-
-
-            console.error(error);
-
-
-            toast.error(
-                "Failed to fetch leave history"
-            );
-
-
-        }
-        finally {
-
-
-            setLoading(false);
-
-
-        }
-
-
-    };
-
-
-
-
-
-
+    }, [loadLeaves]);
 
     // ======================================
     // SEARCH FILTER

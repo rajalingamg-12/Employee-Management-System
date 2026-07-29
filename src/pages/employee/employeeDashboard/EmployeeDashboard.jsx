@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "../../../components/sidebar/Sidebar";
@@ -14,8 +14,7 @@ import {
     FaCalendarPlus,
     FaArrowRight,
     FaUserCircle,
-    FaClipboardList,
-    FaHistory
+    FaClipboardList
 
 } from "react-icons/fa";
 
@@ -29,6 +28,7 @@ function EmployeeDashboard() {
     const navigate = useNavigate();
 
     const user = JSON.parse(localStorage.getItem("user")) || {};
+    const employeeId = user.employeeId;
 
     const [activities, setActivities] = useState([]);
 
@@ -67,45 +67,45 @@ function EmployeeDashboard() {
     // LOAD RECENT ACTIVITY
     // ==========================
 
-    const loadRecentActivity = async () => {
+const loadRecentActivity = useCallback(async () => {
 
-        try {
+    try {
 
-            const response = await api.post("", {
+        const response = await api.post("", {
 
-                action: "getRecentActivity",
+            action: "getRecentActivity",
 
-                employeeId: user.employeeId
+            employeeId
 
-            });
+        });
 
-            if (response.data.success) {
+        if (response.data.success) {
 
-                setActivities(response.data.data || []);
-
-            }
+            setActivities(response.data.data || []);
 
         }
 
-        catch (error) {
+    }
 
-            console.log(error);
+    catch (error) {
 
-        }
+        console.log(error);
 
-    };
+    }
+
+}, [employeeId]);
 
     // ==========================
     // LOAD ATTENDANCE
     // ==========================
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        loadTodayAttendance();
+    //     loadTodayAttendance();
 
-        loadRecentActivity();
+    //     loadRecentActivity();
 
-    }, []);
+    // }, []);
 
     // ==========================
     // LIVE CLOCK
@@ -137,51 +137,61 @@ function EmployeeDashboard() {
 
     }, []);
 
+    
+
     // ==========================
     // LOAD TODAY ATTENDANCE
     // ==========================
 
-    const loadTodayAttendance = async () => {
+  const loadTodayAttendance = useCallback(async () => {
 
-        try {
+    try {
 
-            const response = await api.post("", {
+        const response = await api.post("", {
 
-                action: "getTodayAttendance",
+            action: "getTodayAttendance",
 
-                employeeId: user.employeeId
+            employeeId
+
+        });
+
+        if (response.data.success) {
+
+            const data = response.data.data || {};
+
+            setAttendance({
+
+                checkIn: data.checkIn || "--:--",
+
+                checkOut: data.checkOut || "--:--",
+
+                workingHours: data.totalHours || "0h 0m",
+
+                status: data.status || "Not Marked"
 
             });
 
-            if (response.data.success) {
-
-                const data = response.data.data || {};
-
-                setAttendance({
-
-                    checkIn: data.checkIn || "--:--",
-
-                    checkOut: data.checkOut || "--:--",
-
-                    workingHours: data.totalHours || "0h 0m",
-
-                    status: data.status || "Not Marked"
-
-                });
-
-            }
-
         }
 
-        catch (error) {
+    }
 
-            console.log(error);
+    catch (error) {
 
-            toast.error("Unable to load today's attendance.");
+        console.log(error);
 
-        }
+        toast.error("Unable to load today's attendance.");
 
-    };
+    }
+
+}, [employeeId]);
+
+useEffect(() => {
+
+    loadTodayAttendance();
+
+    loadRecentActivity();
+
+}, [loadTodayAttendance, loadRecentActivity]);
 
     // ==========================
     // CHECK IN

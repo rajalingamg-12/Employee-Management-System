@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import {
     FaTasks,
@@ -21,6 +21,8 @@ function TaskHistory() {
 
     const user = JSON.parse(localStorage.getItem("user")) || {};
 
+    const employeeId = user.employeeId;
+
 
     const [tasks, setTasks] = useState([]);
 
@@ -35,69 +37,49 @@ function TaskHistory() {
 
 
 
+const loadTasks = useCallback(async () => {
+
+    try {
+
+        setLoading(true);
+
+        const response = await getMyTasks(employeeId);
+
+        if (response.success) {
+
+            setTasks(response.data || []);
+            setFilteredTasks(response.data || []);
+
+        } else {
+
+            toast.error(
+                response.message || "Unable to load tasks"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        toast.error("Failed to fetch task history");
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+}, [employeeId]);
+
+
     // ==========================================
     // LOAD TASKS
     // ==========================================
 
-    useEffect(() => {
-
-        loadTasks();
-
-    }, []);
-
-
-
-    const loadTasks = async () => {
-
-
-        try {
-
-
-            setLoading(true);
-
-
-            const response = await getMyTasks(
-                user.employeeId
-            );
-
-
-            if(response.success){
-
-                setTasks(response.data);
-
-                setFilteredTasks(response.data);
-
-            }
-            else{
-
-                toast.error(
-                    response.message || "Unable to load tasks"
-                );
-
-            }
-
-
-        }
-        catch(error){
-
-            console.error(error);
-
-            toast.error(
-                "Failed to fetch task history"
-            );
-
-        }
-        finally{
-
-            setLoading(false);
-
-        }
-
-    };
-
-
-
-
+ useEffect(() => {
+    loadTasks();
+}, [loadTasks]);
 
     // ==========================================
     // SEARCH & FILTER

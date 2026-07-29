@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import {
     FaClipboardList,
@@ -47,11 +48,11 @@ function AdminLeave() {
     const [statusFilter, setStatusFilter] = useState("");
     const [dateFilter, setDateFilter] = useState("");
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        loadLeaves();
+    //     loadLeaves();
 
-    }, []);
+    // }, []);
 
     // ==========================================
     // Load Summary
@@ -91,7 +92,7 @@ function AdminLeave() {
     // Load Leaves
     // ==========================================
 
-    const loadLeaves = async () => {
+    const loadLeaves = useCallback(async () => {
 
         try {
 
@@ -126,8 +127,11 @@ function AdminLeave() {
 
         }
 
-    };
+}, []);
 
+    useEffect(() => {
+    loadLeaves();
+}, [loadLeaves]);
     // ==========================================
     // Filter
     // ==========================================
