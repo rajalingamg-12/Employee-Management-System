@@ -11,7 +11,11 @@ import {
 
 import { toast } from "react-toastify";
 
-import { getAdminTasks } from "../../../services/adminTaskService";
+// import { getAdminTasks } from "../../../services/adminTaskService";
+import {
+    getAdminTasks,
+    updateTaskApproval
+} from "../../../services/adminTaskService";
 
 import "./AdminTasks.css";
 
@@ -28,6 +32,13 @@ function AdminTasks() {
     const [search, setSearch] = useState("");
 
     const [statusFilter, setStatusFilter] = useState("All");
+
+
+    const [selectedTask, setSelectedTask] = useState(null);
+
+    const [adminStatus, setAdminStatus] = useState("");
+
+    const [adminRemarks, setAdminRemarks] = useState("");
 
     // ==================================
     // LOAD TASKS
@@ -182,7 +193,34 @@ function AdminTasks() {
         );
 
     }
-        return (
+
+
+    const saveReview = async () => {
+
+        const response = await updateTaskApproval({
+
+            taskId: selectedTask.taskId,
+            adminStatus,
+            adminRemarks
+
+        });
+
+        if (response.success) {
+
+            toast.success("Task updated successfully");
+
+            setSelectedTask(null);
+
+            loadTasks();
+
+        } else {
+
+            toast.error(response.message);
+
+        }
+
+    };
+    return (
 
         <div className="adm-task-container">
 
@@ -368,7 +406,11 @@ function AdminTasks() {
 
                             <th>Status</th>
 
+                            <th>Admin Status</th>
+
                             <th>Date</th>
+
+                            <th>Action</th>
 
                         </tr>
 
@@ -426,9 +468,49 @@ function AdminTasks() {
 
                                         </td>
 
+
+                                        <td>
+
+                                            <span
+                                                className={`task-status ${String(task.adminStatus)
+                                                    .replace(/\s+/g, "-")
+                                                    .toLowerCase()}`}
+
+                                            >
+
+                                                {task.adminStatus}
+
+                                            </span>
+
+                                        </td>
+
                                         <td>
 
                                             {task.date}
+
+                                        </td>
+
+                                        <td>
+
+                                            <button
+
+                                                className="approve-btn"
+
+                                                onClick={() => {
+
+                                                    setSelectedTask(task);
+
+                                                    setAdminStatus(task.adminStatus);
+
+                                                    setAdminRemarks(task.adminRemarks);
+
+                                                }}
+
+                                            >
+
+                                                Review
+
+                                            </button>
 
                                         </td>
 
@@ -455,6 +537,88 @@ function AdminTasks() {
                 </table>
 
             </div>
+
+            {
+                selectedTask && (
+
+                    <div className="review-modal">
+
+                        <div className="review-box">
+
+                            <h3>
+
+                                Review Task
+
+                            </h3>
+
+                            <select
+
+                                value={adminStatus}
+
+                                onChange={(e) =>
+
+                                    setAdminStatus(e.target.value)
+
+                                }
+
+                            >
+
+                                <option>Pending</option>
+
+                                <option>Approved</option>
+
+                                <option>Rejected</option>
+
+                            </select>
+
+                            <textarea
+
+                                value={adminRemarks}
+
+                                placeholder="Admin Remarks"
+
+                                onChange={(e) =>
+
+                                    setAdminRemarks(e.target.value)
+
+                                }
+
+                            ></textarea>
+
+                            <div className="review-actions">
+
+                                <button
+
+                                    onClick={() =>
+
+                                        setSelectedTask(null)
+
+                                    }
+
+                                >
+
+                                    Cancel
+
+                                </button>
+
+                                <button
+
+                                    onClick={saveReview}
+
+                                >
+
+                                    Save
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                )
+            }
 
         </div>
 

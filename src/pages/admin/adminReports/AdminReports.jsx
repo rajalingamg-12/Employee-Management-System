@@ -102,12 +102,6 @@ function AdminReports() {
     const [search, setSearch] =
         useState("");
 
-
-
-
-
-
-
     // =====================================
     // LOAD REPORTS
     // =====================================

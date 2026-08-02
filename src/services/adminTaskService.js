@@ -41,3 +41,40 @@ export const getAdminTasks = async () => {
     }
 
 };
+
+// ========================================
+// UPDATE APPROVAL
+// ========================================
+
+export const updateTaskApproval = async ({
+    taskId,
+    adminStatus,
+    adminRemarks
+}) => {
+
+    try {
+
+        const params = new URLSearchParams();
+
+        params.append("action", "updateTaskApproval");
+        params.append("taskId", taskId);
+        params.append("adminStatus", adminStatus);
+        params.append("adminRemarks", adminRemarks);
+
+        const response = await api.post("", params);
+
+        return response.data;
+
+    }
+    catch {
+
+        return {
+
+            success:false,
+            message:"Update failed"
+
+        };
+
+    }
+
+};
