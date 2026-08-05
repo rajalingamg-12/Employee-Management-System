@@ -102,49 +102,45 @@ function AdminTasks() {
     // SEARCH + FILTER
     // ==================================
 
-    const filteredTasks = tasks.filter((task) => {
+    const filteredTasks = [...tasks]
 
-        const keyword =
-            search.toLowerCase();
+        // Latest date first
+        .sort((a, b) => {
 
-        const matchesSearch =
+            const [dayA, monthA, yearA] = a.date.split("/");
+            const [dayB, monthB, yearB] = b.date.split("/");
 
-            task.employeeId
-                ?.toLowerCase()
-                .includes(keyword)
+            const dateA = new Date(yearA, monthA - 1, dayA);
+            const dateB = new Date(yearB, monthB - 1, dayB);
 
-            ||
+            return dateB - dateA;
 
-            task.employeeName
-                ?.toLowerCase()
-                .includes(keyword)
+        })
 
-            ||
+        // Search
+        .filter((task) => {
 
-            task.project
-                ?.toLowerCase()
-                .includes(keyword)
+            const keyword = search.toLowerCase();
 
-            ||
+            const matchesSearch =
 
-            task.task
-                ?.toLowerCase()
-                .includes(keyword);
+                task.employeeId?.toLowerCase().includes(keyword) ||
 
-        const matchesStatus =
+                task.employeeName?.toLowerCase().includes(keyword) ||
 
-            statusFilter === "All"
+                task.project?.toLowerCase().includes(keyword) ||
 
-            ||
+                task.task?.toLowerCase().includes(keyword);
 
-            task.status === statusFilter;
+            const matchesStatus =
 
-        return (
-            matchesSearch &&
-            matchesStatus
-        );
+                statusFilter === "All" ||
 
-    });
+                task.status === statusFilter;
+
+            return matchesSearch && matchesStatus;
+
+        });
 
     // ==================================
     // SUMMARY
@@ -218,6 +214,24 @@ function AdminTasks() {
             toast.error(response.message);
 
         }
+
+    };
+
+
+
+    const isToday = (date) => {
+
+        if (!date) return false;
+
+        const today = new Date();
+
+        const day = String(today.getDate()).padStart(2, "0");
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const year = today.getFullYear();
+
+        const todayString = `${day}/${month}/${year}`;
+
+        return date === todayString;
 
     };
     return (
@@ -486,7 +500,15 @@ function AdminTasks() {
 
                                         <td>
 
-                                            {task.date}
+                                            {isToday(task.date) && (
+                                                <span className="today-badge">
+                                                    TODAY
+                                                </span>
+                                            )}
+
+                                            <div>
+                                                {task.date}
+                                            </div>
 
                                         </td>
 
