@@ -37,6 +37,7 @@
 
 }
 
+
 .attendance-header h2 {
 
     margin: 0;
@@ -48,6 +49,7 @@
     font-weight: 700;
 
 }
+
 
 .attendance-header p {
 
@@ -73,6 +75,7 @@
     gap: 12px;
 
 }
+
 
 .attendance-actions button {
 
@@ -102,11 +105,13 @@
 
 }
 
+
 .pdf-btn {
 
     background: #dc3545;
 
 }
+
 
 .pdf-btn:hover {
 
@@ -116,11 +121,13 @@
 
 }
 
+
 .excel-btn {
 
     background: #198754;
 
 }
+
 
 .excel-btn:hover {
 
@@ -148,6 +155,7 @@
 
 }
 
+
 .summary-card {
 
     background: #fff;
@@ -169,6 +177,7 @@
 
 }
 
+
 .summary-card:hover {
 
     transform: translateY(-4px);
@@ -177,6 +186,7 @@
         0 12px 25px rgba(0, 0, 0, 0.12);
 
 }
+
 
 .summary-icon {
 
@@ -201,7 +211,9 @@
 }
 
 
-/* SUMMARY COLORS */
+/* =========================================================
+   SUMMARY COLORS
+========================================================= */
 
 .total .summary-icon {
 
@@ -209,11 +221,13 @@
 
 }
 
+
 .present .summary-icon {
 
     background: #28a745;
 
 }
+
 
 .absent .summary-icon {
 
@@ -221,11 +235,13 @@
 
 }
 
+
 .late .summary-icon {
 
     background: #ff9800;
 
 }
+
 
 .hours .summary-icon {
 
@@ -245,6 +261,7 @@
     font-weight: 700;
 
 }
+
 
 .summary-card p {
 
@@ -299,6 +316,7 @@
 
 }
 
+
 .search-icon {
 
     position: absolute;
@@ -314,6 +332,7 @@
     pointer-events: none;
 
 }
+
 
 .search-box input {
 
@@ -336,6 +355,7 @@
     transition: 0.3s ease;
 
 }
+
 
 .search-box input:focus {
 
@@ -378,6 +398,7 @@
 
 }
 
+
 .attendance-toolbar select:focus,
 .attendance-toolbar input[type="date"]:focus {
 
@@ -416,6 +437,7 @@
     transition: 0.3s ease;
 
 }
+
 
 .reset-btn:hover {
 
@@ -464,6 +486,7 @@
 
 }
 
+
 .attendance-table thead {
 
     background: #ff6b00;
@@ -471,6 +494,7 @@
     color: #fff;
 
 }
+
 
 .attendance-table th {
 
@@ -486,6 +510,7 @@
 
 }
 
+
 .attendance-table td {
 
     padding: 14px;
@@ -500,11 +525,13 @@
 
 }
 
+
 .attendance-table tbody tr {
 
     transition: 0.2s ease;
 
 }
+
 
 .attendance-table tbody tr:hover {
 
@@ -514,14 +541,58 @@
 
 
 /* =========================================================
-   TODAY / LATEST DATE
+   TODAY LABEL
 ========================================================= */
 
-.attendance-table tbody tr:first-child td:first-child {
+.today-label {
+
+    display: inline-block;
+
+    margin-bottom: 5px;
+
+    padding: 3px 9px;
+
+    background: #ff6b00;
+
+    color: #ffffff;
+
+    border-radius: 20px;
+
+    font-size: 10px;
 
     font-weight: 700;
 
+    letter-spacing: 0.6px;
+
+    line-height: 1.2;
+
+    vertical-align: middle;
+
+}
+
+
+/* =========================================================
+   TODAY DATE
+========================================================= */
+
+.today-date {
+
+    display: block;
+
     color: #ff6b00;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   NORMAL DATE
+========================================================= */
+
+.attendance-table td strong {
+
+    font-weight: 600;
 
 }
 
@@ -546,6 +617,7 @@
 
 }
 
+
 .status-badge.present {
 
     background: #d1f7dd;
@@ -554,6 +626,7 @@
 
 }
 
+
 .status-badge.absent {
 
     background: #ffd9dc;
@@ -561,6 +634,7 @@
     color: #dc3545;
 
 }
+
 
 .status-badge.late {
 
@@ -690,6 +764,13 @@
     }
 
 
+    .attendance-header {
+
+        margin-bottom: 20px;
+
+    }
+
+
     .attendance-header h2 {
 
         font-size: 24px;
@@ -770,6 +851,22 @@
 
     }
 
+
+    .today-label {
+
+        font-size: 9px;
+
+        padding: 3px 8px;
+
+    }
+
+
+    .today-date {
+
+        font-size: 13px;
+
+    }
+
 }
 
 
@@ -793,9 +890,18 @@
     }
 
 
+    .attendance-header p {
+
+        font-size: 12px;
+
+    }
+
+
     .attendance-actions {
 
         flex-direction: column;
+
+        width: 100%;
 
     }
 
@@ -836,6 +942,13 @@
     }
 
 
+    .summary-card p {
+
+        font-size: 12px;
+
+    }
+
+
     .attendance-toolbar {
 
         padding: 12px;
@@ -866,6 +979,42 @@
     .attendance-table-wrapper {
 
         border-radius: 10px;
+
+    }
+
+
+    .attendance-table {
+
+        min-width: 1100px;
+
+    }
+
+
+    .attendance-table th,
+    .attendance-table td {
+
+        padding: 10px;
+
+        font-size: 12px;
+
+    }
+
+
+    .status-badge {
+
+        padding: 5px 11px;
+
+        font-size: 11px;
+
+    }
+
+
+    .loading,
+    .no-data {
+
+        padding: 40px 15px;
+
+        font-size: 16px;
 
     }
 
