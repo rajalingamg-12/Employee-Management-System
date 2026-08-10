@@ -1,328 +1,872 @@
+/* =========================================================
+   ADMIN ATTENDANCE PAGE
+========================================================= */
+
 .admin-attendance {
-    padding: 25px;
-    background: #f8f9fc;
+
+    width: 100%;
+
     min-height: 100vh;
+
+    padding: 25px;
+
+    background: #f8f9fc;
+
+    box-sizing: border-box;
+
 }
 
-/* ===========================
-   Header
-=========================== */
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .attendance-header {
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
+    gap: 20px;
+
     margin-bottom: 25px;
+
     flex-wrap: wrap;
-    gap: 15px;
+
 }
 
 .attendance-header h2 {
+
+    margin: 0;
+
     color: #ff6b00;
+
     font-size: 28px;
+
     font-weight: 700;
+
 }
 
+.attendance-header p {
+
+    margin: 6px 0 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
 .attendance-actions {
+
     display: flex;
+
+    align-items: center;
+
     gap: 12px;
+
 }
 
 .attendance-actions button {
+
     border: none;
+
     cursor: pointer;
+
     border-radius: 8px;
+
     padding: 10px 18px;
+
     color: #fff;
+
     display: flex;
+
     align-items: center;
+
+    justify-content: center;
+
     gap: 8px;
-    transition: .3s;
+
+    transition: 0.3s ease;
+
     font-size: 14px;
+
     font-weight: 600;
+
 }
 
 .pdf-btn {
+
     background: #dc3545;
+
 }
 
 .pdf-btn:hover {
+
     background: #b52a37;
+
+    transform: translateY(-2px);
+
 }
 
 .excel-btn {
+
     background: #198754;
+
 }
 
 .excel-btn:hover {
+
     background: #146c43;
+
+    transform: translateY(-2px);
+
 }
 
-/* ===========================
-   Summary Cards
-=========================== */
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
 
 .attendance-summary {
+
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
     gap: 20px;
+
     margin-bottom: 25px;
+
 }
 
 .summary-card {
+
     background: #fff;
+
     border-radius: 14px;
+
     padding: 20px;
+
     display: flex;
+
     align-items: center;
+
     gap: 18px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
-    transition: .3s;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.08);
+
+    transition: 0.3s ease;
+
 }
 
 .summary-card:hover {
+
     transform: translateY(-4px);
+
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.12);
+
 }
 
 .summary-icon {
+
     width: 60px;
+
     height: 60px;
+
+    min-width: 60px;
+
     border-radius: 50%;
+
     color: #fff;
+
     font-size: 24px;
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
 }
 
+
+/* SUMMARY COLORS */
+
 .total .summary-icon {
+
     background: #ff9800;
+
 }
 
 .present .summary-icon {
+
     background: #28a745;
+
 }
 
 .absent .summary-icon {
+
     background: #dc3545;
+
 }
 
 .late .summary-icon {
+
     background: #ff9800;
+
 }
 
 .hours .summary-icon {
+
     background: #0d6efd;
+
 }
 
+
 .summary-card h3 {
+
+    margin: 0 0 5px;
+
     font-size: 28px;
+
     color: #333;
-    margin-bottom: 5px;
+
+    font-weight: 700;
+
 }
 
 .summary-card p {
+
+    margin: 0;
+
     color: #666;
+
     font-size: 14px;
+
 }
 
-/* ===========================
-   Toolbar
-=========================== */
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
 
 .attendance-toolbar {
+
     background: #fff;
+
     border-radius: 12px;
+
     padding: 18px;
+
     margin-bottom: 25px;
+
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 15px;
+
     align-items: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08);
+
 }
 
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
 .search-box {
+
     flex: 1;
+
     min-width: 250px;
+
     position: relative;
+
 }
 
 .search-icon {
+
     position: absolute;
+
     left: 14px;
+
     top: 50%;
+
     transform: translateY(-50%);
-    color: gray;
+
+    color: #999;
+
+    pointer-events: none;
+
 }
 
 .search-box input {
+
     width: 100%;
+
+    height: 42px;
+
     padding: 12px 15px 12px 42px;
+
     border: 1px solid #ddd;
+
     border-radius: 8px;
+
     outline: none;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+    transition: 0.3s ease;
+
 }
+
+.search-box input:focus {
+
+    border-color: #ff6b00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 107, 0, 0.1);
+
+}
+
+
+/* =========================================================
+   SELECT + DATE
+========================================================= */
 
 .attendance-toolbar select,
 .attendance-toolbar input[type="date"] {
-    padding: 11px 15px;
+
+    height: 42px;
+
+    padding: 0 15px;
+
     border: 1px solid #ddd;
+
     border-radius: 8px;
+
     outline: none;
+
+    background: #fff;
+
+    font-size: 14px;
+
+    color: #444;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition: 0.3s ease;
+
 }
 
+.attendance-toolbar select:focus,
+.attendance-toolbar input[type="date"]:focus {
+
+    border-color: #ff6b00;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 107, 0, 0.1);
+
+}
+
+
+/* =========================================================
+   RESET BUTTON
+========================================================= */
+
 .reset-btn {
+
+    height: 42px;
+
     background: #ff6b00;
+
     color: #fff;
+
     border: none;
-    padding: 11px 20px;
+
+    padding: 0 20px;
+
     border-radius: 8px;
+
     cursor: pointer;
+
     font-weight: 600;
-    transition: .3s;
+
+    font-size: 14px;
+
+    transition: 0.3s ease;
+
 }
 
 .reset-btn:hover {
+
     background: #e85d00;
+
+    transform: translateY(-2px);
+
 }
 
-/* ===========================
-   Table
-=========================== */
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
 
 .attendance-table-wrapper {
+
+    width: 100%;
+
     background: #fff;
+
     border-radius: 12px;
+
     overflow-x: auto;
-    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+
+    overflow-y: hidden;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08);
+
+    -webkit-overflow-scrolling: touch;
+
 }
 
+
+/* =========================================================
+   TABLE
+========================================================= */
+
 .attendance-table {
+
     width: 100%;
+
+    min-width: 1100px;
+
     border-collapse: collapse;
+
 }
 
 .attendance-table thead {
+
     background: #ff6b00;
+
     color: #fff;
+
 }
 
 .attendance-table th {
+
     padding: 15px;
+
     text-align: left;
+
     font-size: 14px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
 }
 
 .attendance-table td {
+
     padding: 14px;
+
     border-bottom: 1px solid #eee;
+
     font-size: 14px;
+
+    color: #444;
+
+    white-space: nowrap;
+
+}
+
+.attendance-table tbody tr {
+
+    transition: 0.2s ease;
+
 }
 
 .attendance-table tbody tr:hover {
+
     background: #fff8f2;
+
 }
 
-/* ===========================
-   Status
-=========================== */
+
+/* =========================================================
+   TODAY / LATEST DATE
+========================================================= */
+
+.attendance-table tbody tr:first-child td:first-child {
+
+    font-weight: 700;
+
+    color: #ff6b00;
+
+}
+
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
 
 .status-badge {
+
     padding: 6px 14px;
+
     border-radius: 30px;
+
     font-size: 12px;
-    font-weight: bold;
+
+    font-weight: 700;
+
     display: inline-block;
+
+    white-space: nowrap;
+
 }
 
 .status-badge.present {
+
     background: #d1f7dd;
+
     color: #198754;
+
 }
 
 .status-badge.absent {
+
     background: #ffd9dc;
+
     color: #dc3545;
+
 }
 
 .status-badge.late {
+
     background: #fff4d0;
+
     color: #ff9800;
+
 }
 
-/* ===========================
-   Messages
-=========================== */
+
+/* =========================================================
+   LOADING / NO DATA
+========================================================= */
 
 .loading,
 .no-data {
+
     background: #fff;
-    padding: 40px;
+
+    padding: 50px 20px;
+
     text-align: center;
+
     border-radius: 12px;
+
     font-size: 18px;
+
     color: #666;
-    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08);
+
 }
 
-/* ===========================
-   Responsive
-=========================== */
+
+/* =========================================================
+   LARGE TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .attendance-summary {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 992px) {
 
-    .attendance-header {
-        flex-direction: column;
-        align-items: flex-start;
+    .admin-attendance {
+
+        padding: 20px;
+
     }
+
+
+    .attendance-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
 
     .attendance-actions {
+
         width: 100%;
+
     }
+
 
     .attendance-actions button {
+
         flex: 1;
-        justify-content: center;
+
     }
+
 
     .attendance-toolbar {
+
         flex-direction: column;
+
         align-items: stretch;
+
     }
 
+
     .search-box {
+
         width: 100%;
+
+        min-width: 100%;
+
     }
+
 
     .attendance-toolbar select,
     .attendance-toolbar input[type="date"],
     .reset-btn {
+
         width: 100%;
+
     }
+
 }
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 768px) {
 
     .admin-attendance {
+
         padding: 15px;
+
     }
+
+
+    .attendance-header h2 {
+
+        font-size: 24px;
+
+    }
+
+
+    .attendance-header p {
+
+        font-size: 13px;
+
+    }
+
 
     .attendance-summary {
+
         grid-template-columns: 1fr;
+
+        gap: 15px;
+
     }
+
 
     .summary-card {
+
         padding: 16px;
+
     }
 
-    .summary-card h3 {
-        font-size: 22px;
+
+    .summary-icon {
+
+        width: 52px;
+
+        height: 52px;
+
+        min-width: 52px;
+
+        font-size: 21px;
+
     }
+
+
+    .summary-card h3 {
+
+        font-size: 23px;
+
+    }
+
+
+    .summary-card p {
+
+        font-size: 13px;
+
+    }
+
+
+    .attendance-toolbar {
+
+        padding: 15px;
+
+    }
+
+
+    .attendance-table {
+
+        min-width: 1100px;
+
+    }
+
 
     .attendance-table th,
     .attendance-table td {
-        padding: 10px;
+
+        padding: 11px;
+
         font-size: 13px;
+
     }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .admin-attendance {
+
+        padding: 10px;
+
+    }
+
+
+    .attendance-header h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .attendance-actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .attendance-actions button {
+
+        width: 100%;
+
+        flex: none;
+
+    }
+
+
+    .summary-card {
+
+        padding: 14px;
+
+    }
+
+
+    .summary-icon {
+
+        width: 48px;
+
+        height: 48px;
+
+        min-width: 48px;
+
+        font-size: 19px;
+
+    }
+
+
+    .summary-card h3 {
+
+        font-size: 21px;
+
+    }
+
+
+    .attendance-toolbar {
+
+        padding: 12px;
+
+        gap: 10px;
+
+    }
+
+
+    .search-box input {
+
+        font-size: 13px;
+
+    }
+
+
+    .attendance-toolbar select,
+    .attendance-toolbar input[type="date"],
+    .reset-btn {
+
+        height: 40px;
+
+        font-size: 13px;
+
+    }
+
+
+    .attendance-table-wrapper {
+
+        border-radius: 10px;
+
+    }
+
 }
