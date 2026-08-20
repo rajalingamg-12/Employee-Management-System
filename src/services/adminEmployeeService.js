@@ -53,3 +53,18 @@ export const getAdminEmployees = async () => {
     }
 
 };
+
+// UNLOCK EMPLOYEE LOGIN
+
+
+export const unlockEmployee = async (employeeId) => {
+
+  const formData = new URLSearchParams();
+
+  formData.append("action", "unlockEmployee");
+  formData.append("employeeId", employeeId);
+
+  const response = await api.post("", formData);
+
+  return response.data;
+};

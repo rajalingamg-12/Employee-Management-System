@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaSearch, FaUsers } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-import { getAdminEmployees } from "../../../services/adminEmployeeService";
+import { getAdminEmployees, unlockEmployee } from "../../../services/adminEmployeeService";
 
 import "./AdminEmployees.css";
 
@@ -87,6 +87,50 @@ function AdminEmployees() {
     };
 
     // ==================================
+    // UNLOCK EMPLOYEE LOGIN
+    // ==================================
+
+    const handleUnlock = async (employeeId) => {
+
+        try {
+
+            const response =
+                await unlockEmployee(employeeId);
+
+            if (response.success) {
+
+                toast.success(
+                    "Employee login unlocked successfully."
+                );
+
+                loadEmployees();
+
+            } else {
+
+                toast.error(
+                    response.message ||
+                    "Unable to unlock employee."
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Unlock employee error:",
+                error
+            );
+
+            toast.error(
+                "Something went wrong while unlocking login."
+            );
+
+        }
+
+    };
+
+
+    // ==================================
     // SEARCH FILTER
     // ==================================
 
@@ -98,28 +142,28 @@ function AdminEmployees() {
 
 
 
-            return (
+        return (
 
-                employee.name
-                    ?.toLowerCase()
-                    .includes(value)
+            employee.name
+                ?.toLowerCase()
+                .includes(value)
 
-                ||
+            ||
 
-                employee.employeeId
-                    ?.toLowerCase()
-                    .includes(value)
+            employee.employeeId
+                ?.toLowerCase()
+                .includes(value)
 
-                ||
+            ||
 
-                employee.department
-                    ?.toLowerCase()
-                    .includes(value)
+            employee.department
+                ?.toLowerCase()
+                .includes(value)
 
-            );
+        );
 
 
-        });
+    });
 
     if (loading) {
 
@@ -135,6 +179,8 @@ function AdminEmployees() {
         );
 
     }
+
+
 
     return (
 
@@ -255,6 +301,9 @@ function AdminEmployees() {
                                 Phone
                             </th>
 
+                            <th>
+                                Login
+                            </th>
 
                         </tr>
 
@@ -325,7 +374,28 @@ function AdminEmployees() {
 
                                             </td>
 
+                                            <td>
 
+                                                {employee.loginBlocked ? (
+
+                                                    <button
+                                                        className="unlock-btn"
+                                                        onClick={() =>
+                                                            handleUnlock(employee.employeeId)
+                                                        }
+                                                    >
+                                                        Unlock Login
+                                                    </button>
+
+                                                ) : (
+
+                                                    <span className="login-active">
+                                                        Active
+                                                    </span>
+
+                                                )}
+
+                                            </td>
 
                                         </tr>
 
@@ -339,7 +409,7 @@ function AdminEmployees() {
 
                                 <tr>
 
-                                    <td colSpan="6">
+                                   <td colSpan="7">
 
                                         No Employees Found
 
@@ -366,6 +436,8 @@ function AdminEmployees() {
 
 
         </div>
+
+
 
 
     );

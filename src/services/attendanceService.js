@@ -201,3 +201,34 @@ export const getAttendanceSummary = async () => {
     }
 
 };
+
+// =========================
+// UNLOCK EMPLOYEE LOGIN
+// =========================
+
+export const unlockEmployee = async (employeeId) => {
+
+    try {
+
+        const response = await api.post("", {
+
+            action: "unlockEmployee",
+
+            employeeId
+
+        });
+
+        return response.data;
+
+    } catch (error) {
+
+        console.error("Unlock Employee Error:", error);
+
+        return {
+            success: false,
+            message: error.message
+        };
+
+    }
+
+};

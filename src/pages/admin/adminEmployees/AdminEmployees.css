@@ -105,8 +105,36 @@
 
 }
 
+/* ======================================================
+Unlock Button 
+====================================================== */
 
+.unlock-btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #dc2626;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
 
+.unlock-btn:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.login-active {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 600;
+}
 
 
 /* ======================================================
